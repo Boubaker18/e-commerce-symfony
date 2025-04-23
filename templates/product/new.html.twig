@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un produit{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0"><i class="bi bi-plus-circle"></i> Ajouter un nouveau produit</h2>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <h4 class="text-primary mb-3">Informations générales</h4>
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(form.name, 'Nom du produit') }}
+                            {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le nom du produit'}}) }}
+                            <div class="form-text text-muted">
+                                Donnez un nom clair et descriptif à votre produit.
+                            </div>
+                            {{ form_errors(form.name) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(form.price, 'Prix') }}
+                            {{ form_widget(form.price, {'attr': {'class': 'form-control', 'placeholder': 'Ex: 19.99'}}) }}
+                            <div class="form-text text-muted">
+                                Indiquez le prix en euros (€).
+                            </div>
+                            {{ form_errors(form.price) }}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            {{ form_label(form.description, 'Description') }}
+                            {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': 5, 'placeholder': 'Décrivez votre produit en détail...'}}) }}
+                            <div class="form-text text-muted">
+                                Une description détaillée aidera les clients à comprendre votre produit.
+                            </div>
+                            {{ form_errors(form.description) }}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <h4 class="text-primary mb-3">Image du produit</h4>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                {{ form_label(form.imageFile, 'Image') }}
+                                {{ form_widget(form.imageFile, {'attr': {'class': 'form-control'}}) }}
+                                <div class="form-text text-muted">
+                                    Formats acceptés: JPG, PNG, GIF. Taille maximale: 2MB.
+                                </div>
+                                {{ form_errors(form.imageFile) }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <h4 class="text-primary mb-3">Stock</h4>
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(form.stock, 'Quantité en stock') }}
+                            {{ form_widget(form.stock, {'attr': {'class': 'form-control', 'placeholder': 'Ex: 100'}}) }}
+                            <div class="form-text text-muted">
+                                Nombre d'unités disponibles à la vente.
+                            </div>
+                            {{ form_errors(form.stock) }}
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a href="{{ path('app_product_index') }}" class="btn btn-secondary me-md-2">
+                            <i class="bi bi-arrow-left"></i> Retour à la liste
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save"></i> Enregistrer
+                        </button>
+                    </div>
+                    
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

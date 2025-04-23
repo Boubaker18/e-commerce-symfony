@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}À propos - E-commerce Symfony{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="mb-4">À propos de notre boutique</h1>
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="text-primary mb-3">Notre histoire</h2>
+                    <p>
+                        Fondée en 2023, E-commerce Symfony est une boutique en ligne dédiée à offrir des produits de qualité à des prix compétitifs. Notre mission est de fournir une expérience d'achat en ligne simple, sécurisée et agréable pour tous nos clients.
+                    </p>
+                    
+                    <h2 class="text-primary mb-3 mt-4">Notre vision</h2>
+                    <p>
+                        Nous croyons que le commerce électronique devrait être accessible à tous. Notre plateforme est conçue pour être intuitive et facile à utiliser, que vous soyez un acheteur expérimenté ou que vous fassiez vos premiers pas dans le monde des achats en ligne.
+                    </p>
+                    
+                    <h2 class="text-primary mb-3 mt-4">Nos valeurs</h2>
+                    <div class="row mt-3">
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100 border-primary">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-shield-check text-primary" style="font-size: 2rem;"></i>
+                                    <h5 class="card-title mt-3">Qualité</h5>
+                                    <p class="card-text">Nous sélectionnons soigneusement chaque produit pour garantir la meilleure qualité possible.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100 border-primary">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-people text-primary" style="font-size: 2rem;"></i>
+                                    <h5 class="card-title mt-3">Service client</h5>
+                                    <p class="card-text">Notre équipe est disponible pour vous aider et répondre à toutes vos questions.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100 border-primary">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-lock text-primary" style="font-size: 2rem;"></i>
+                                    <h5 class="card-title mt-3">Sécurité</h5>
+                                    <p class="card-text">Vos données et transactions sont protégées par les technologies les plus avancées.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

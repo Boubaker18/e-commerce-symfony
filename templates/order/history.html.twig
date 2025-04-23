@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes commandes - E-commerce Symfony{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Mes commandes</h1>
+    
+    {% if app.user.orders is empty %}
+        <div class="alert alert-info">
+            Vous n'avez pas encore passé de commande. <a href="{{ path('app_product_index') }}">Parcourir les produits</a>
+        </div>
+    {% else %}
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="mb-4">Historique des commandes</h2>
+                
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Numéro</th>
+                                <th>Date</th>
+                                <th>Statut</th>
+                                <th class="text-end">Total</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in app.user.orders %}
+                                <tr>
+                                    <td>{{ order.id }}</td>
+                                    <td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
+                                    <td>
+                                        <span class="badge {% if order.status == 'pending' %}bg-warning{% elseif order.status == 'completed' %}bg-success{% else %}bg-info{% endif %}">
+                                            {{ order.status }}
+                                        </span>
+                                    </td>
+                                    <td class="text-end">{{ order.total|number_format(2, ',', ' ') }} €</td>
+                                    <td>
+                                        <a href="{{ path('app_order_confirmation', {'id': order.id}) }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-eye"></i> Détails
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    
+    <div class="mt-4">
+        <a href="{{ path('app_cart') }}" class="btn btn-outline-primary">
+            <i class="bi bi-cart"></i> Retour au panier
+        </a>
+        <a href="{{ path('app_product_index') }}" class="btn btn-primary ms-2">
+            <i class="bi bi-shop"></i> Continuer mes achats
+        </a>
+    </div>
+</div>
+{% endblock %}

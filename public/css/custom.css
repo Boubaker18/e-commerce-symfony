@@ -1,0 +1,4 @@
+/* Target and hide deprecation warnings */
+body > *:not(nav):not(main):not(footer):not(script):not(link):not(style) {
+    display: none !important;
+}

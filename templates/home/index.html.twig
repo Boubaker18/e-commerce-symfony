@@ -1,0 +1,159 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - E-commerce{% endblock %}
+
+{% block body %}
+<div class="jumbotron bg-light p-5 rounded shadow-sm mb-4">
+    <h1>Bienvenue sur notre boutique en ligne!</h1>
+    <p class="lead">Découvrez nos produits de qualité à des prix compétitifs.</p>
+    <hr>
+    <p>Parcourez notre catalogue et trouvez ce dont vous avez besoin.</p>
+    
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="admin-actions mt-3">
+            <a href="{{ path('app_product_new') }}" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Ajouter un nouveau produit
+            </a>
+            <a href="{{ path('app_product_index') }}" class="btn btn-outline-primary ms-2">
+                <i class="bi bi-gear"></i> Gérer les produits
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+{% if is_granted('ROLE_ADMIN') %}
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0">Total Commandes</h6>
+                        <h2 class="mb-0">{{ orderCount|default(0) }}</h2>
+                    </div>
+                    <i class="bi bi-cart4" style="font-size: 2.5rem;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0">Produits</h6>
+                        <h2 class="mb-0">{{ productCount|default(0) }}</h2>
+                    </div>
+                    <i class="bi bi-box" style="font-size: 2.5rem;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0">Utilisateurs</h6>
+                        <h2 class="mb-0">{{ userCount|default(0) }}</h2>
+                    </div>
+                    <i class="bi bi-people" style="font-size: 2.5rem;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-dark">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0">Ventes (€)</h6>
+                        <h2 class="mb-0">{{ totalSales|default(0) }}</h2>
+                    </div>
+                    <i class="bi bi-currency-euro" style="font-size: 2.5rem;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<h2 class="section-title mb-4">Nos produits</h2>
+
+{% if products is empty %}
+    <div class="alert alert-info">
+        Aucun produit disponible pour le moment.
+    </div>
+{% else %}
+    <div class="row">
+        {% for product in products %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm product-card">
+                    <div class="position-absolute top-0 end-0 p-2">
+                        {% if is_granted('ROLE_USER') and not is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('app_favorites_toggle', {'id': product.id}) }}" class="btn btn-sm btn-light rounded-circle">
+                                {% set isFavorite = false %}
+                                {% for favorite in app.user.favorites|default([]) %}
+                                    {% if favorite.id == product.id %}
+                                        {% set isFavorite = true %}
+                                    {% endif %}
+                                {% endfor %}
+                                
+                                <i class="bi bi-heart{% if isFavorite %}-fill text-danger{% endif %}"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                    
+                    {% if product.image is defined and product.image %}
+                        <img src="{{ asset('uploads/products/' ~ product.image) }}" alt="{{ product.name }}" class="card-img-top product-image">
+                    {% else %}
+                        <div class="product-image-placeholder bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                            <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text text-muted flex-grow-1">{{ product.description|slice(0, 100) }}{% if product.description|length > 100 %}...{% endif %}</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="h5 mb-0 text-primary">{{ product.price }} €</span>
+                            <span class="badge {% if product.stock > 0 %}bg-success{% else %}bg-danger{% endif %}">
+                                {% if product.stock > 0 %}
+                                    En stock ({{ product.stock }})
+                                {% else %}
+                                    Rupture de stock
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="card-footer bg-white border-top-0">
+                        <div class="d-grid gap-2">
+                            <a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn btn-outline-primary">
+                                <i class="bi bi-eye"></i> Voir détails
+                            </a>
+                            {% if product.stock > 0 and not is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('app_cart_add', {'id': product.id}) }}" class="btn btn-primary">
+                                    <i class="bi bi-cart-plus"></i> Ajouter au panier
+                                </a>
+                            {% endif %}
+                            
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <div class="btn-group mt-2" role="group">
+                                    <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn btn-warning">
+                                        <i class="bi bi-pencil"></i> Modifier
+                                    </a>
+                                    <a href="{{ path('app_product_delete', {'id': product.id}) }}" class="btn btn-danger" 
+                                       onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit?')">
+                                        <i class="bi bi-trash"></i> Supprimer
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}
